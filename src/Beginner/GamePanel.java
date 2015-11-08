@@ -35,7 +35,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	private int waveNumber;
 	private boolean waveStart;
 	private int waveDelay=2000;
-
+	private ClassLoader loader= GamePanel.class.getClassLoader();
 		private Image backgroundImage;
 
 	
@@ -46,7 +46,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		setFocusable(true);
 		requestFocus();
-		 backgroundImage = ImageIO.read(new File("./bin/resource/Background.png"));
+		 backgroundImage = ImageIO.read(loader.getResource("Background.png"));
 	}
 	
 	//FUNCTIONS
