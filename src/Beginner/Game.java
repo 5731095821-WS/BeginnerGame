@@ -1,3 +1,6 @@
+//This is Main
+
+package Beginner;
 
 import javax.swing.*;
 public class Game {
