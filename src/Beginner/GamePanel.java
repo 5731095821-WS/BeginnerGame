@@ -180,11 +180,11 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 		for(int i=0;i<enemies.size();i++){
 			if(enemies.get(i).isDead()){
 				Enemy e = enemies.get(i);
-				// Release powerUp chance
+				//  powerUp chance
 				double rand=Math.random();
-				if(rand<0.001)powerUps.add(new PowerUp(1,e.getX(),e.getY()));
-				else if(rand<0.020)powerUps.add(new PowerUp(3,e.getX(),e.getY()));
-				else if(rand<0.020)powerUps.add(new PowerUp(2,e.getX(),e.getY()));
+				if(rand<0.3)powerUps.add(new PowerUp(1,e.getX(),e.getY()));
+				else if(rand<0.5)powerUps.add(new PowerUp(3,e.getX(),e.getY()));
+				else if(rand<1)powerUps.add(new PowerUp(2,e.getX(),e.getY()));
 				
 				
 				//add score to player
@@ -217,6 +217,38 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 				
 			}
 		}
+		//Player-powerUp collision
+		int px= player.getX();
+		int py= player.getY();
+		int pr= player.getR();
+		for(int i=0;i<powerUps.size();i++){
+			PowerUp p = powerUps.get(i);
+			double x=p.getX();
+			double y=p.getY();
+			double r=p.getR();
+			double dx=px-x;
+			double dy=py-y;
+			double distance =Math.sqrt(dx*dx+dy*dy);
+			//collected
+			if(distance<pr+r){
+				int type=p.getType();
+				if(type==1){
+					player.gainLife();
+				}
+				if(type==2){
+					player.increasePower(1);
+				}
+				if(type==3){
+					player.increasePower(2);
+				}
+				
+				powerUps.remove(i);
+				i--;
+			}
+			
+		}
+		
+		
 		
 	}
 
@@ -275,7 +307,19 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 		g.setFont(new Font("Century Gothic",Font.PLAIN,30));
 		g.drawString("Score: "+player.getScore(), WIDTH-200, 50);
 		
+		// Draw Player power
+			g.setColor(Color.YELLOW);
+			g.fillRect(20, 60, player.getPower()*10, 10);//size of Power block is 10*10
+			g.setColor(Color.YELLOW.darker());
+			g.setStroke(new BasicStroke(2));
+			for(int i=0;i<player.getRequiredPower();i++){
+				g.drawRect(20+10*i, 60,10,10);
+			}
+			g.setStroke(new BasicStroke(1));
 	}
+	
+	
+	
 	private void gameDraw(){
 		Graphics g2=this.getGraphics();
 		g2.drawImage(image, 0, 0, null);
@@ -297,7 +341,14 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 				enemies.add(new Enemy(1,1));
 			}
 		}
-		
+		if(waveNumber==3){ 
+			for(int i=0;i<4;i++){
+				enemies.add(new Enemy(2,1));//Type 2 enemies
+			}
+			for(int i=0;i<4;i++){
+				enemies.add(new Enemy(3,1));//Type 3 enemies
+			}
+		}
 	}	
 	
 //KEY LISTENER

@@ -18,14 +18,34 @@ public class Enemy {
 		super();
 		this.type=type;
 		this.rank=rank;
+		//default Enemy
 		if(type==1){
 			color1=Color.BLUE;
 			if(rank==1){
-				speed=2;
+				speed=3;
 				r=8;
 				health=1;
 			}
 		}
+		//faster Default
+			if(type==2){
+				color1=Color.RED;
+				if(rank==1){
+					speed=4;
+					r=8;
+					health=2;
+				}
+			}
+		//slow but hard to kill
+			if(type==3){
+				color1=Color.GREEN;
+				if(rank==1){
+					speed=2;
+					r=10;
+					health=5;
+				}
+			}
+		
 		x=Math.random()*GamePanel.WIDTH/2+GamePanel.WIDTH/4;
 		y=-r;
 		double angle= Math.random()*140+20;

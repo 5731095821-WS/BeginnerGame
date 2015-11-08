@@ -6,13 +6,17 @@ public class Player {
 //fields
 	private int x,y,r;
 	private int dx,dy,speed;
-	private int lives;
+	private int lives,maxLives;
 	private boolean left,right,up,down,firing;
 	private Color color1,color2;
 	private long firingTimer,firingDelay;
 	private boolean recovering;
 	private long recoveryTimer;
 	private int score;
+	private int powerLevel,power;
+	private int[] requiredPower={1,2,3,4,5};
+	
+	
 	//constructor
 	public Player(){
 		x=GamePanel.WIDTH/2;
@@ -21,6 +25,7 @@ public class Player {
 		dx=0;dy=0;
 		speed=7;
 		lives=3;
+		maxLives=10;
 		color1=Color.WHITE;
 		color2=Color.RED;
 		firing=false;
@@ -48,11 +53,28 @@ public void update(){
 	if(y>GamePanel.HEIGHT-r)y=GamePanel.HEIGHT-r; 
 	dx=0;
 	dy=0; 
+	
+	//firing
 	if(firing){
 		 long elapsed=(System.nanoTime()-firingTimer)/1000000;
+		 
+		 
+		 
 		 if(elapsed>firingDelay){
-			 GamePanel.bullets.add(new Bullet(270,x,y));
-			 firingTimer=System.nanoTime();
+			firingTimer=System.nanoTime();
+			if(powerLevel<2){
+				 GamePanel.bullets.add(new Bullet(270,x,y));
+			}
+			else if(powerLevel<4){
+				 GamePanel.bullets.add(new Bullet(270,x+5,y));
+				 GamePanel.bullets.add(new Bullet(270,x-5,y));
+			}
+			else {
+				 GamePanel.bullets.add(new Bullet(270,x,y));
+				 GamePanel.bullets.add(new Bullet(275,x+5,y));
+				 GamePanel.bullets.add(new Bullet(265,x-5,y));
+				
+			}
 		 }
 	}
 	long elapsed=(System.nanoTime()-recoveryTimer)/1000000;
@@ -121,5 +143,25 @@ public int getScore(){
 }
 public void addScore(int i){
 	score+=i;
+}
+public void gainLife() {
+	lives++;
+	if(lives>maxLives)lives=maxLives;//Lives is limited to maxLives
+}
+public int getPowerLevel(){
+	return powerLevel;
+}
+public int getPower(){
+	return power;
+}
+public int getRequiredPower(){
+	return requiredPower[powerLevel];
+}
+public void increasePower(int i){
+	power+=i;
+	if(power>=requiredPower[powerLevel]){
+		power-=requiredPower[powerLevel];
+		powerLevel++;
+	}
 }
 }
