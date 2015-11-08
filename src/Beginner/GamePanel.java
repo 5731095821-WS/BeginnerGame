@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	private boolean waveStart;
 	private int waveDelay=2000;
 	private ClassLoader loader= GamePanel.class.getClassLoader();
-		private Image backgroundImage;
+	private Image backgroundImage;
 
 	
 	
@@ -88,7 +88,12 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 			startTime=System.nanoTime();
 			
 			gameUpdate();
-			gameRender();
+			try {
+				gameRender();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			gameDraw();
 			
 			URDTimeMillis=(System.nanoTime()-startTime)/1000000;
@@ -259,14 +264,15 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	}
 
 
-	private void gameRender(){
+	private void gameRender() throws IOException {
 	
 		
 		
 		
 		//Draw BackGround
-		g.setColor(new Color(150,12,31) );
-		//g.fillRect(0, 0, WIDTH, HEIGHT);
+		if(waveNumber%3==0)this.setBackgroundImage("Background3.png");
+		else if(waveNumber%3==2)this.setBackgroundImage("Background2.png");
+		else this.setBackgroundImage("Background.png");
 		g.drawImage(backgroundImage, 0, 0, null);
 
 		
@@ -402,6 +408,11 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	public void keyTyped(KeyEvent key) {
 		// TODO Auto-generated method stub
 		}
+
+	public void setBackgroundImage(String str) throws IOException {
+		this.backgroundImage = ImageIO.read(loader.getResource(str));
+		
+	}
 	
 }
  

@@ -164,6 +164,7 @@ public void increasePower(int i){
 	if(power>=requiredPower[powerLevel]){
 		power-=requiredPower[powerLevel];
 		powerLevel++;
+	//	if(powerLevel>=requiredPower.length)powerLevel=requiredPower.length-1;
 	}
 }
 }
