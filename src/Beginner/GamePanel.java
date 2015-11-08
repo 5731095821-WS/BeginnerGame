@@ -27,6 +27,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 	public static Player player;
 	public static ArrayList<Bullet>bullets;
 	public static ArrayList<Enemy>enemies;
+	public static ArrayList<PowerUp>powerUps;
 	private long waveStartTimer,waveStartTimerDiff;
 	private int waveNumber;
 	private boolean waveStart;
@@ -66,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 		player=new Player();
 		bullets=new ArrayList<Bullet>();
 		enemies=new ArrayList<Enemy>();
+		powerUps=new ArrayList<PowerUp>();
 		
 		waveStartTimer=0;
 		waveStartTimerDiff=0;
@@ -140,6 +142,15 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 		for(int i=0;i<enemies.size();i++){
 			enemies.get(i).update();
 		}
+		//PowerUp update
+		for(int i=0;i<powerUps.size();i++){
+		boolean remove=	powerUps.get(i).update();
+			if(remove){
+				powerUps.remove(i);
+				i--;
+			}
+		}
+		
 		
 		//Bullet - Enemy Collision
 		for(int i=0;i<bullets.size();i++){
@@ -169,6 +180,14 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 		for(int i=0;i<enemies.size();i++){
 			if(enemies.get(i).isDead()){
 				Enemy e = enemies.get(i);
+				// Release powerUp chance
+				double rand=Math.random();
+				if(rand<0.001)powerUps.add(new PowerUp(1,e.getX(),e.getY()));
+				else if(rand<0.020)powerUps.add(new PowerUp(3,e.getX(),e.getY()));
+				else if(rand<0.020)powerUps.add(new PowerUp(2,e.getX(),e.getY()));
+				
+				
+				//add score to player
 				player.addScore(e.getScore());
 				enemies.remove(i);
 				i--;
@@ -208,7 +227,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 		
 		
 		//Draw BackGround
-		g.setColor(Color.PINK );
+		g.setColor(new Color(150,12,31) );
 	//	g.clearRect(0, 0, 800, 600);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
@@ -226,6 +245,10 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 		//Draw enemy
 		for(int i=0;i<enemies.size();i++){
 			enemies.get(i).draw(g);
+		}
+		//Draw PowerUp
+		for(int i=0;i<powerUps.size();i++){
+			powerUps.get(i).draw(g);
 		}
 		
 		//Draw wave number

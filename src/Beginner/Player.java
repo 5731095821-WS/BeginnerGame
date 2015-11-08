@@ -17,7 +17,7 @@ public class Player {
 	public Player(){
 		x=GamePanel.WIDTH/2;
 		y=GamePanel.HEIGHT/2;
-		r=5;
+		r=10;
 		dx=0;dy=0;
 		speed=7;
 		lives=3;

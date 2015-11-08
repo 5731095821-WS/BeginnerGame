@@ -22,7 +22,7 @@ public class Enemy {
 			color1=Color.BLUE;
 			if(rank==1){
 				speed=2;
-				r=5;
+				r=8;
 				health=1;
 			}
 		}
