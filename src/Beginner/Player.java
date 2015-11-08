@@ -16,6 +16,8 @@ public class Player {
 	private int powerLevel,power;
 	private int[] requiredPower={1,2,3,4,5};
 	
+	private Animation animation;
+	
 	
 	//constructor
 	public Player(){

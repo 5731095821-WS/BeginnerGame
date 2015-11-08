@@ -13,7 +13,7 @@ public class Bullet {
 	public Bullet(double angle,int x,int y){
 		this.x=x;
 		this.y=y;
-		r=2;
+		r=3;
 		speed=15;
 		rad=Math.toRadians(angle);
 		dx=Math.cos(rad)*speed;

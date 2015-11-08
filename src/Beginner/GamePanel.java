@@ -1,4 +1,5 @@
 package Beginner;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
@@ -11,11 +12,13 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable,KeyListener{
+public class GamePanel extends JPanel implements Runnable,KeyListener {
 	//FIELDS
 	public static int WIDTH=800,HEIGHT=600;
 	private Thread thread;
@@ -32,15 +35,18 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 	private int waveNumber;
 	private boolean waveStart;
 	private int waveDelay=2000;
-	
+
+		private Image backgroundImage;
+
 	
 	
 	//COnstructor
-	public GamePanel(){
+	public GamePanel() throws IOException{
 		super();
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		setFocusable(true);
 		requestFocus();
+		 backgroundImage = ImageIO.read(new File("./bin/resource/Background.png"));
 	}
 	
 	//FUNCTIONS
@@ -260,8 +266,8 @@ public class GamePanel extends JPanel implements Runnable,KeyListener{
 		
 		//Draw BackGround
 		g.setColor(new Color(150,12,31) );
-	//	g.clearRect(0, 0, 800, 600);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		//g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.drawImage(backgroundImage, 0, 0, null);
 
 		
 		//Draw Player
