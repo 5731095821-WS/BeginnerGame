@@ -21,7 +21,8 @@ public class Enemy {
 		this.rank=rank;
 		//default Enemy
 		if(type==1){
-			color1=Color.BLUE;
+		//	color1=Color.BLUE;
+			color1=new Color(0,0,255,128);
 			if(rank==1){
 				speed=3;
 				r=8;
@@ -45,20 +46,52 @@ public class Enemy {
 		}
 		//faster Default
 			if(type==2){
-				color1=Color.RED;
+				//color1=Color.RED;
+				color1=new Color(255,0,0,128);
 				if(rank==1){
 					speed=4;
 					r=8;
 					health=2;
 				}
+				if(rank==2){
+					speed=4+this.rank;
+					r=8+this.rank;
+					health=2+this.rank;
+				}
+				if(rank==3){
+					speed=4;
+					r=20;
+					health=2+this.rank;
+				}
+				if(rank==3){
+					speed=4;
+					r=30;
+					health=2+this.rank;
+				}
 			}
 		//slow but hard to kill
 			if(type==3){
-				color1=Color.GREEN;
+				//color1=Color.GREEN;
+				color1=new Color(0,255,0,128);
 				if(rank==1){
 					speed=2;
-					r=10;
+					r=7;
 					health=5;
+				}
+				if(rank==2){
+					speed=2;
+					r=10;
+					health=6;
+				}
+				if(rank==3){
+					speed=2;
+					r=25;
+					health=7;
+				}
+				if(rank==4){
+					speed=2;
+					r=45;
+					health=10;
 				}
 			}
 		
@@ -82,7 +115,7 @@ public class Enemy {
 		//Getters Setters
 		public double getX(){return x;}
 		public double getY(){return y;}
-		public double getR(){return r;}
+		public int getR(){return r;}
 		public boolean isDead(){return dead;}
 		public int getType() {
 			return type;
@@ -111,6 +144,15 @@ public class Enemy {
 			int amount=0;
 			if(type==1){
 				amount=3;
+			}
+			if(type==2){
+				amount=3;
+			}
+			if(type==3){
+				amount=3;
+			}
+			if(type==4){
+				amount=4;
 			}
 			for(int i=0;i<amount;i++){
 				Enemy e= new Enemy(getType(),getRank()-1);
