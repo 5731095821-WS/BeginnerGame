@@ -11,7 +11,7 @@ private Color color1;
 	// 1 is +1Life
 	// 2 is +1 power
 	// 3 is +2 power 
-	//
+	// 4 slow Down
 	
 	//Constructor
 	public PowerUp(int type,double x,double y){
@@ -21,6 +21,10 @@ private Color color1;
 		if(type==1)color1=Color.PINK;
 		if(type==2||type==3)color1=Color.YELLOW;
 		r=6;
+		if(type==4){
+			color1=Color.WHITE;
+			r=6;
+		}
 	}
 //Funtions
 

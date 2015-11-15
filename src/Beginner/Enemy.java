@@ -12,8 +12,12 @@ public class Enemy {
 	private boolean ready,dead;
 	private boolean hit;
 	private long hitTimer;
+	private boolean slow;
 	
-	
+	public void setSlow(boolean slow) {
+		this.slow = slow;
+	}
+
 	//Constructor	
 	public Enemy(int type,int rank) {
 		super();
@@ -171,8 +175,14 @@ public class Enemy {
 		}
 	}
 	public void update(){
+		if(slow){
+			x+=dx*0.3;
+			y+=dy*0.3;
+		}
+		else{
 		x+=dx;
 		y+=dy;
+		}
 		if(!ready){
 			if(x>r&& x<GamePanel.WIDTH-r&&y>r&&y<GamePanel.HEIGHT-r){
 				ready=true;
