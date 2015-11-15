@@ -17,6 +17,7 @@ public class Player {
 	private int[] requiredPower={1,2,3,4,5};
 	
 	private Animation animation;
+
 	
 	
 	//constructor
@@ -34,7 +35,7 @@ public class Player {
 		firingTimer=System.nanoTime();
 		firingDelay=200;
 		score=0;
-		
+
 		
 		recovering=false;
 		recoveryTimer=0;
@@ -89,7 +90,7 @@ public void loseLife(){
 	lives--;
 	recovering=true;
 	recoveryTimer=System.nanoTime();
-	
+	 
 }
 public void draw(Graphics2D g){
 	if(recovering){
@@ -160,11 +161,19 @@ public int getRequiredPower(){
 	return requiredPower[powerLevel];
 }
 public void increasePower(int i){
-	power+=i;
-	if(power>=requiredPower[powerLevel]){
-		power-=requiredPower[powerLevel];
-		powerLevel++;
-	//	if(powerLevel>=requiredPower.length)powerLevel=requiredPower.length-1;
-	}
+    power += i;
+    if(powerLevel == 4) {
+      if(power > requiredPower[powerLevel]) {
+        power = requiredPower[powerLevel];
+      }
+      return;
+    }
+    if(power >= requiredPower[powerLevel]) {
+      power -= requiredPower[powerLevel];
+      powerLevel++;
+    }
+}
+public boolean isDead() {
+	return lives<=0;
 }
 }
