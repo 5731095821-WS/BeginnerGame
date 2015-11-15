@@ -202,7 +202,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 				player.addScore(e.getScore());
 				enemies.remove(i);
 				i--;
-				
+				e.explode();
 			}
 		}
 		
@@ -351,7 +351,10 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		if(waveNumber==2){ 
 			for(int i=0;i<8;i++){
 				enemies.add(new Enemy(1,1));
+				
 			}
+			enemies.add(new Enemy(1,2));
+			enemies.add(new Enemy(1,2));
 		}
 		if(waveNumber==3){ 
 			for(int i=0;i<4;i++){
@@ -360,6 +363,10 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 			for(int i=0;i<4;i++){
 				enemies.add(new Enemy(3,1));//Type 3 enemies
 			}
+			enemies.add(new Enemy(1,3));
+			enemies.add(new Enemy(1,3));
+			enemies.add(new Enemy(1,4));
+			enemies.add(new Enemy(1,4));
 		}
 	}	
 	

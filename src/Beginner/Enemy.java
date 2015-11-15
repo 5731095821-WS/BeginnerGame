@@ -10,7 +10,8 @@ public class Enemy {
 
 	private Color color1;
 	private boolean ready,dead;
-	
+	private boolean hit;
+	private long hitTimer;
 	
 	
 	//Constructor	
@@ -25,6 +26,21 @@ public class Enemy {
 				speed=3;
 				r=8;
 				health=1;
+			}
+			if(rank==2){
+				speed=4;
+				r=10;
+				health=2;
+			}
+			if(rank==3){
+				speed=5;
+				r=20;
+				health=3;
+			}
+			if(rank==4){
+				speed=5;
+				r=30;
+				health=4;
 			}
 		}
 		//faster Default
@@ -45,6 +61,10 @@ public class Enemy {
 					health=5;
 				}
 			}
+		
+		hit=false;
+		hitTimer=0;
+		
 		
 		x=Math.random()*GamePanel.WIDTH/2+GamePanel.WIDTH/4;
 		y=-r;
@@ -82,9 +102,32 @@ public class Enemy {
 	public void hit(){
 		health--;
 		if(health<0)dead=true;
+		hit=true;
+		hitTimer=System.nanoTime();
 	}
 	
-	
+	public void explode(){
+		if(rank>1){
+			int amount=0;
+			if(type==1){
+				amount=3;
+			}
+			for(int i=0;i<amount;i++){
+				Enemy e= new Enemy(getType(),getRank()-1);
+				e.x=this.x;e.y=this.y;
+				double angle=0;
+				if(ready){
+					angle=Math.random()*140+20;
+				}
+				else{
+					angle =Math.random()*360;
+				}
+				e.rad=Math.toRadians(angle);
+				GamePanel.enemies.add(e);
+				
+			}
+		}
+	}
 	public void update(){
 		x+=dx;
 		y+=dy;
@@ -97,8 +140,27 @@ public class Enemy {
 		if(y<r&&dy<0)dy=-dy;
 		if(x>GamePanel.WIDTH-r&&dx>0)dx=-dx;
 		if(y>GamePanel.HEIGHT-r&&dy>0)dy=-dy;
+		
+		
+		if(hit){
+			long elapsed=(System.nanoTime()-hitTimer)/1000000;
+			if(elapsed>50){
+				hit=false;
+				hitTimer=0;
+			}
+		}
 	}
 	public void draw(Graphics2D g){
+		if(hit){
+			g.setPaint(Color.WHITE);
+			g.fillOval((int)x-r, (int)y-r, 2*r, 2*r);
+		
+			g.setStroke(new BasicStroke(3));
+			g.setColor(Color.WHITE.darker());
+			g.fillOval((int)x-r, (int)y-r, 2*r, 2*r);
+			g.setStroke(new BasicStroke(1));
+		}
+		else{
 		g.setPaint(color1);
 		g.fillOval((int)x-r, (int)y-r, 2*r, 2*r);
 	
@@ -106,6 +168,7 @@ public class Enemy {
 		g.setColor(color1.darker());
 		g.fillOval((int)x-r, (int)y-r, 2*r, 2*r);
 		g.setStroke(new BasicStroke(1));
+		}
 	}
 
 }
