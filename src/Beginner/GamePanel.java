@@ -1,26 +1,24 @@
 package Beginner;
 import javax.imageio.ImageIO;
-import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.*;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import sun.security.util.Length;
-
 public class GamePanel extends JPanel implements Runnable,KeyListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//FIELDS
 	public static int WIDTH=800,HEIGHT=600;
 	private Thread thread;
@@ -28,7 +26,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	private BufferedImage image;
 	private Graphics2D g;
 	private int FPS=30;
-	private double averageFPS;
+
 	public static Player player;
 	public static ArrayList<Bullet>bullets;
 	public static ArrayList<Enemy>enemies;
@@ -71,7 +69,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		
 		
-		long startTime,URDTimeMillis,waitTime,totalTime=0,targetTime=1000/FPS;
+		long startTime,URDTimeMillis,waitTime,targetTime=1000/FPS;
 		int frameCount=0;
 		int maxFrameCount=30;
 		player=new Player();
@@ -111,12 +109,9 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 				//Do nothing
 			}
 			
-			totalTime+=System.nanoTime()-startTime;
 			frameCount++;
 			if(frameCount==maxFrameCount){
-				averageFPS=1000.0/((totalTime/frameCount)/1000000);
 				frameCount=0;
-				totalTime=0;
 			}
 			
 		}
@@ -423,8 +418,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	
 	private void createNewEnemies() {
 		enemies.clear();
-		Enemy e;
-	    if(waveNumber == 1) {
+		if(waveNumber == 1) {
 	        for(int i = 0; i < 4*waveNumber; i++) {
 	          enemies.add(new Enemy(1, 1));
 	        }
@@ -480,7 +474,25 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	        enemies.add(new Enemy(3, 4));
 	      }
 	      if(waveNumber == 9) {
-	        running = false;
+	          for(int i = 0; i < 3*waveNumber; i++) {
+		          enemies.add(new Enemy(1, 1));
+		        }
+	        enemies.add(new Enemy(2, 4));
+	        enemies.add(new Enemy(2, 4));
+	        enemies.add(new Enemy(3, 4));
+	        enemies.add(new Enemy(3, 4));
+	      }
+	      if(waveNumber == 10) {
+	          for(int i = 0; i < 3*waveNumber; i++) {
+		          enemies.add(new Enemy(1, 1));
+		        }
+	        enemies.add(new Enemy(2, 4));
+	        enemies.add(new Enemy(3, 4));
+	        enemies.add(new Enemy(3, 4));
+	        enemies.add(new Enemy(3, 4));
+	      }
+	      if(waveNumber == 11) {
+	    	  running=false;
 	      }
 	}	
 	

@@ -6,7 +6,7 @@ public class Enemy {
    //FIELDS
 	private double x,y,dx,dy,rad,speed;
 	private int r;
-	private int health,type,rank,score;
+	private int health,type,rank;
 
 	private Color color1;
 	private boolean ready,dead;
