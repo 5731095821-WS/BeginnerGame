@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 public class PowerUp {
 //FIELDS
 private	double x,y;
-private int width=32,height=32;
+private int width=40,height=40;
 private	int r;
 private	int type;
 private Animation animation;
