@@ -1,13 +1,19 @@
 package Beginner;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
 
 public class PowerUp {
 //FIELDS
 private	double x,y;
+private int width=32,height=32;
 private	int r;
 private	int type;
-private Color color1;
+private Animation animation;
+private BufferedImage image;
+ClassLoader loader= PowerUp.class.getClassLoader();
 	// 1 is +1Life
 	// 2 is +1 power
 	// 3 is +2 power 
@@ -18,13 +24,18 @@ private Color color1;
 		this.type=type;
 		this.x=x;
 		this.y=y;
-		if(type==1)color1=Color.PINK;
-		if(type==2||type==3)color1=Color.YELLOW;
-		r=6;
-		if(type==4){
-			color1=Color.WHITE;
-			r=6;
+		try{
+	
+		if(type==1)image=ImageIO.read(loader.getResource("powerups/health.png"));
+		if(type==2)image=ImageIO.read(loader.getResource("powerups/bullets.png"));
+		if(type==3)image=ImageIO.read(loader.getResource("powerups/ammobox.png"));
+		
+		if(type==4)image=ImageIO.read(loader.getResource("powerups/battery.png"));
+		}catch(Exception e){
+			e.printStackTrace();
 		}
+		animation=new Animation();
+		r=6;
 	}
 //Funtions
 
@@ -34,11 +45,14 @@ private Color color1;
 			return false;
 	}
 	public void draw(Graphics2D g){
+		g.drawImage(image,(int)x-width/2,(int)y-height/2,null);
+		/*
 		g.setColor(color1);
 		g.fillRect((int)x-r, (int)y-r, 2*r, r*2);
 		g.setStroke(new BasicStroke(3));
 		g.setColor(color1.darker());
 		g.drawRect((int)x-r, (int)y-r, 2*r, r*2);
+	*/
 	}
 	
 	

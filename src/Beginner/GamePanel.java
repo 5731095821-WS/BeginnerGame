@@ -33,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	public static ArrayList<PowerUp>powerUps;
 	public static ArrayList<Explosion>explosions;
 	public static ArrayList<Text>texts;
+	public static ArrayList<Turret> turrets;
 	private long waveStartTimer,waveStartTimerDiff;
 	private int waveNumber;
 	private boolean waveStart;
@@ -75,6 +76,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		player=new Player();
 		bullets=new ArrayList<Bullet>();
 		enemies=new ArrayList<Enemy>();
+		turrets=new ArrayList<Turret>();
 		powerUps=new ArrayList<PowerUp>();
 		explosions=new ArrayList<Explosion>();
 		texts=new ArrayList<Text>();
@@ -130,7 +132,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	}
 	private void gameUpdate(){
 		//new wave
-		if(waveStartTimer==0&&enemies.size()==0){
+		if(waveStartTimer==0&&enemies.size()==0&&turrets.size()==0){
 			waveNumber++;
 			waveStart=false;
 			waveStartTimer=System.nanoTime();
@@ -144,7 +146,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 			}
 		}
 		//create enemies
-		if(waveStart&&enemies.size()==0){
+		if(waveStart&&enemies.size()==0&&turrets.size()==0){
 			createNewEnemies();
 		}
 		
@@ -166,6 +168,10 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		for(int i=0;i<enemies.size();i++){
 			enemies.get(i).update();
 		}
+		//Turretupdate
+		for(int i=0;i<turrets.size();i++){
+			turrets.get(i).update();
+		}
 		//PowerUp update
 		for(int i=0;i<powerUps.size();i++){
 		boolean remove=	powerUps.get(i).update();
@@ -176,7 +182,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		}
 		//Explosion update
 		for(int i=0;i<explosions.size();i++){
-			boolean remove=explosions.get(i).updtae();
+			boolean remove=explosions.get(i).update();
 			if(remove){
 				explosions.remove(i);
 				i--;
@@ -215,6 +221,30 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 				}
 			}
 		}
+		//Bullet - Turret Collision
+		for(int i=0;i<turrets.size();i++){
+			Bullet b=bullets.get(i);
+			double bX=b.getX();
+			double bY=b.getY();
+			double bR=b.getR();
+			for(int j=0;j<turrets.size();j++){
+				Turret e = turrets.get(j);
+				double eX=e.getX();
+				double eY=e.getY();
+				double eR=e.getR();
+				
+				double dx=bX-eX;
+				double dy=bY-eY;
+				double distance=Math.sqrt(dx*dx+dy*dy);
+				if(distance<bR+eR){
+					e.hit();
+					bullets.remove(i);
+					i--;
+					break;
+					
+				}
+			}
+		}
 		//check dead enemies
 		for(int i=0;i<enemies.size();i++){
 			if(enemies.get(i).isDead()){
@@ -222,7 +252,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 				//  powerUp chance
 				double rand=Math.random()*100;
 			if(rand<5)powerUps.add(new PowerUp(1,e.getX(),e.getY()));
-				else if(rand<50)powerUps.add(new PowerUp(3,e.getX(),e.getY()));
+				else if(rand<10)powerUps.add(new PowerUp(3,e.getX(),e.getY()));
 				else if(rand<15)powerUps.add(new PowerUp(2,e.getX(),e.getY()));
 				else if(rand<20)powerUps.add(new PowerUp(4,e.getX(),e.getY()));
 				
@@ -231,9 +261,25 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 				enemies.remove(i);
 				i--;
 				e.explode();
+				explosions.add(new Explosion(e.getX(),e.getY()));
+			}
+		}
+	
+	/*	
+		for(int i=0;i<turrets.size();i++){
+			if(turrets.get(i).isDead()){
+				Turret e = turrets.get(i);
+				//add score to player
+				player.addScore(e.getScore());
+				turrets.remove(i);
+				i--;
+				e.explode();
 				explosions.add(new Explosion(e.getX(),e.getY(),e.getR(),e.getR()+30));
 			}
 		}
+		*/
+		
+		
 		
 		//check Player - enemy Collision
 		if(!player.isRecovering()){
@@ -252,6 +298,22 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 				if(distance<pr+er){
 					player.loseLife();
 					
+				}
+				
+				
+			}
+			//Player-turret collision
+			for(int i=0;i<turrets.size();i++){
+				Turret e=turrets.get(i);
+				double ex=e.getX();
+				double ey=e.getY();
+				double er=e.getR();
+				
+				double dx=px-ex;
+				double dy=py-ey;
+				double distance=Math.sqrt(dx*dx+dy*dy);
+				if(distance<pr+er){
+					player.loseLife();					
 				}
 				
 				
@@ -282,16 +344,19 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 				}
 				if(type==2){
 					player.increasePower(1);
-				//	texts.add(new Text(player.getX(),player.getY(),2000,""));
+					texts.add(new Text(player.getX(),player.getY(),2000,"bullets"));
 				}
 				if(type==3){
 					player.increasePower(2);
-					texts.add(new Text(player.getX(),player.getY(),2000,"Spread"));
+					texts.add(new Text(player.getX(),player.getY(),2000,"bullets"));
 				}
 				if(type==4){
 				slowDownTimer=System.nanoTime();
 				for(int j=0;j<enemies.size();j++ ){
 					enemies.get(j).setSlow(true);
+					}
+				for(int j=0;j<turrets.size();j++ ){
+					turrets.get(j).setSlow(true);
 					}
 				texts.add(new Text(player.getX(),player.getY(),2000,"Slow Down"));
 				}
@@ -301,13 +366,15 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 			}
 			
 		}
-		//slowDown update
 		if(slowDownTimer!=0){
 			slowDownTimerDiff=(System.nanoTime()-slowDownTimer)/1000000;
 			if(slowDownTimerDiff>slowDownLength){
 				slowDownTimer=0; 
 				for(int j=0;j<enemies.size();j++ ){
 					enemies.get(j).setSlow(false);
+					}
+				for(int j=0;j<turrets.size();j++ ){
+					turrets.get(j).setSlow(false);
 					}
 			}
 		}
@@ -347,6 +414,10 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		for(int i=0;i<enemies.size();i++){
 			enemies.get(i).draw(g);
 		}
+		//Draw Turret
+		for(int i=0;i<turrets.size();i++){
+			turrets.get(i).draw(g);
+		}
 		//Draw PowerUp
 		for(int i=0;i<powerUps.size();i++){
 			powerUps.get(i).draw(g);
@@ -367,12 +438,8 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		}
 		//Draw Player lives
 		for(int i=0;i<player.getLives();i++){
-			g.setColor(Color.WHITE);
-			g.fillOval(20+(20*i),20 , player.getR()*3, player.getR()*3);
-			g.setStroke(new BasicStroke(3));
-			g.setColor(Color.WHITE.darker());
-			g.drawOval(20+(20*i),20 , player.getR()*3, player.getR()*3);
-			g.setStroke(new BasicStroke(1));
+			//g.fillOval(20+(20*i),20 , player.getR()*3, player.getR()*3);
+		
 		}
 		//Draw player score
 		g.setColor(Color.WHITE);
@@ -470,23 +537,26 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		          enemies.add(new Enemy(1, 1));
 		        }
 	        enemies.add(new Enemy(1, 4));
-	        enemies.add(new Enemy(2, 4));
+	        enemies.add(new Enemy(2, 3));
 	        enemies.add(new Enemy(3, 4));
 	      }
 	      if(waveNumber == 9) {
 	          for(int i = 0; i < 3*waveNumber; i++) {
 		          enemies.add(new Enemy(1, 1));
 		        }
-	        enemies.add(new Enemy(2, 4));
-	        enemies.add(new Enemy(2, 4));
+	        enemies.add(new Enemy(2, 3));
+	        enemies.add(new Enemy(2, 3));
 	        enemies.add(new Enemy(3, 4));
 	        enemies.add(new Enemy(3, 4));
+	        
 	      }
 	      if(waveNumber == 10) {
 	          for(int i = 0; i < 3*waveNumber; i++) {
 		          enemies.add(new Enemy(1, 1));
 		        }
-	        enemies.add(new Enemy(2, 4));
+	        enemies.add(new Enemy(2, 3));
+	        enemies.add(new Enemy(2, 3));
+	        enemies.add(new Enemy(3, 4));
 	        enemies.add(new Enemy(3, 4));
 	        enemies.add(new Enemy(3, 4));
 	        enemies.add(new Enemy(3, 4));

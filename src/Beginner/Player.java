@@ -1,14 +1,14 @@
 package Beginner;
 import java.awt.*;
-
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 public class Player {
 //fields
-	private int x,y,r;
+	private int x,y,r,width,height;
 	private int dx,dy,speed;
 	private int lives,maxLives;
 	private boolean left,right,up,down,firing;
-	private Color color1,color2;
 	private long firingTimer,firingDelay;
 	private boolean recovering;
 	private long recoveryTimer;
@@ -17,7 +17,10 @@ public class Player {
 	private int[] requiredPower={1,2,3,4,5};
 	
 	private Animation animation;
-
+	private BufferedImage[] idleSprites;
+	private BufferedImage[] walkingSprites;
+	private BufferedImage[] hurtingSprites;
+	ClassLoader loader=Player.class.getClassLoader();
 	
 	
 	//constructor
@@ -29,25 +32,50 @@ public class Player {
 		speed=7;
 		lives=3;
 		maxLives=10;
-		color1=Color.WHITE;
-		color2=Color.RED;
 		firing=false;
 		firingTimer=System.nanoTime();
 		firingDelay=200;
 		score=0;
-
+		width=64;
+		height=64;
 		
 		recovering=false;
 		recoveryTimer=0;
 		
+	try {
+			
+			idleSprites = new BufferedImage[1];
+			idleSprites[0] = ImageIO.read(loader.getResource("player/doctor_stand_0001.png"));
+			walkingSprites = new BufferedImage[4];
+			hurtingSprites= new BufferedImage[2];
+			//BufferedImage image = ImageIO.read(loader.getResource("graphics/player/kirbywalk.gif"));
+			for(int i = 0; i < walkingSprites.length; i++) {
+				walkingSprites[i] = ImageIO.read(loader.getResource("player/doctor_move_0"+(i+1)+".png"));
+				
+			}
+			for(int i = 0; i < hurtingSprites.length; i++) {
+				hurtingSprites[i] = ImageIO.read(loader.getResource("player/doctor_summon_0"+(i+1)+".png"));
+				
+			}
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
+		animation = new Animation();
 			}
 	//functions
 public void update(){
 	if(left)dx-=speed;
 	if(right)dx+=speed;
-	if(up)dy-=speed;
-	if(down)dy+=speed;
+	if(up){
+		dy-=speed;
+	
+	}
+	if(down){
+		dy+=speed;
+	}
 	x+=dx;
 	y+=dy;
 	if(x<r)x=r;
@@ -80,6 +108,16 @@ public void update(){
 			}
 		 }
 	}
+	//Sprites
+	if(up||down){
+		animation.setFrames(walkingSprites);
+		animation.setDelay(100);
+	}else{
+		animation.setFrames(idleSprites);
+		animation.setDelay(-1);
+	}
+	animation.update();
+	//recovering
 	long elapsed=(System.nanoTime()-recoveryTimer)/1000000;
 	if(elapsed>2000){
 		recovering=false;
@@ -88,27 +126,20 @@ public void update(){
 }
 public void loseLife(){
 	lives--;
+	decreasePower();
 	recovering=true;
 	recoveryTimer=System.nanoTime();
 	 
 }
 public void draw(Graphics2D g){
 	if(recovering){
-		g.setColor(color2);
-		g.fillOval(x-r, y-r, 2*r, 2*r);
-		g.setStroke(new BasicStroke(3));
-		g.setColor(color2.darker());
-		g.drawOval(x-r, y-r, 2*r, 2*r);
-		g.setStroke(new BasicStroke(1));
+		animation.setFrames(hurtingSprites);
+		animation.setDelay(100);
+		g.drawImage(animation.getImage(),x-width/2,y-height/2,null);
 	}
 	else{
-	g.setColor(color1);
-	g.fillOval(x-r, y-r, 2*r, 2*r);
-	g.setStroke(new BasicStroke(3));
-	g.setColor(color1.darker());
-	g.drawOval(x-r, y-r, 2*r, 2*r);
-	g.setStroke(new BasicStroke(1));
-	}
+	g.drawImage(animation.getImage(),x-width/2,y-height/2,null);
+			}
 }
 public void setLeft(boolean left) {
 	this.left = left;
@@ -172,6 +203,11 @@ public void increasePower(int i){
       power -= requiredPower[powerLevel];
       powerLevel++;
     }
+}
+public void decreasePower(){
+    powerLevel--;
+    power=0;
+    if(powerLevel<=0)powerLevel=0;
 }
 public boolean isDead() {
 	return lives<=0;
