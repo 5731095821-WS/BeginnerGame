@@ -13,7 +13,7 @@ public class Enemy {
 	private int r;
 	private int health,type,rank;
 	private int width,height;
-	private Color color1;
+
 	private boolean ready,dead;
 	private boolean hit;
 	private long hitTimer;
@@ -37,7 +37,7 @@ public class Enemy {
 		this.rank=rank;
 		//default Enemy
 		if(type==1){
-			color1=Color.RED;
+	
 		
 			if(rank==1){
 				walkingSprites=Resource.kidWalkingSprites;
@@ -71,7 +71,7 @@ public class Enemy {
 		}
 		//faster Default
 			if(type==2){
-				color1=new Color(255,0,0,128);
+
 				if(rank==1){
 					walkingSprites=Resource.crowMove;
 					hurtingSprites=Resource.crowMove;
@@ -105,7 +105,7 @@ public class Enemy {
 		//slow but hard to kill
 			if(type==3){
 				//color1=Color.GREEN;
-				color1=new Color(0,255,0,128);
+			
 				if(rank==1){
 					walkingSprites=Resource.kidChainsawSprites;
 					hurtingSprites=Resource.kidHurtingSprites;

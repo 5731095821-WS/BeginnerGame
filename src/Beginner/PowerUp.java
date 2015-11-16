@@ -35,7 +35,7 @@ ClassLoader loader= PowerUp.class.getClassLoader();
 			e.printStackTrace();
 		}
 		animation=new Animation();
-		r=6;
+		r=12;
 	}
 //Funtions
 
@@ -46,13 +46,7 @@ ClassLoader loader= PowerUp.class.getClassLoader();
 	}
 	public void draw(Graphics2D g){
 		g.drawImage(image,(int)x-width/2,(int)y-height/2,null);
-		/*
-		g.setColor(color1);
-		g.fillRect((int)x-r, (int)y-r, 2*r, r*2);
-		g.setStroke(new BasicStroke(3));
-		g.setColor(color1.darker());
-		g.drawRect((int)x-r, (int)y-r, 2*r, r*2);
-	*/
+
 	}
 	
 	
