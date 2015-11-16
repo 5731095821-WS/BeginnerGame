@@ -247,7 +247,7 @@ public class Enemy {
 	public void draw(Graphics2D g){
 		if(hit){
 			animation.setFrames(hurtingSprites);
-			animation.setDelay(100);
+			animation.setDelay(800);
 			g.drawImage(animation.getImage(),(int)(x-2*r),(int)(y-2*r),null);
 			
 		}
