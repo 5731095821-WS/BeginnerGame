@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	public static ArrayList<PowerUp>powerUps;
 	public static ArrayList<Explosion>explosions;
 	public static ArrayList<Text>texts;
-	public static ArrayList<Turret> turrets;
+
 	private long waveStartTimer,waveStartTimerDiff;
 	private int waveNumber;
 	private boolean waveStart;
@@ -76,7 +76,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		player=new Player();
 		bullets=new ArrayList<Bullet>();
 		enemies=new ArrayList<Enemy>();
-		turrets=new ArrayList<Turret>();
+
 		powerUps=new ArrayList<PowerUp>();
 		explosions=new ArrayList<Explosion>();
 		texts=new ArrayList<Text>();
@@ -132,7 +132,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	}
 	private void gameUpdate(){
 		//new wave
-		if(waveStartTimer==0&&enemies.size()==0&&turrets.size()==0){
+		if(waveStartTimer==0&&enemies.size()==0){
 			waveNumber++;
 			waveStart=false;
 			waveStartTimer=System.nanoTime();
@@ -146,7 +146,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 			}
 		}
 		//create enemies
-		if(waveStart&&enemies.size()==0&&turrets.size()==0){
+		if(waveStart&&enemies.size()==0){
 			createNewEnemies();
 		}
 		
@@ -168,10 +168,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		for(int i=0;i<enemies.size();i++){
 			enemies.get(i).update();
 		}
-		//Turretupdate
-		for(int i=0;i<turrets.size();i++){
-			turrets.get(i).update();
-		}
+	
 		//PowerUp update
 		for(int i=0;i<powerUps.size();i++){
 		boolean remove=	powerUps.get(i).update();
@@ -221,30 +218,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 				}
 			}
 		}
-		//Bullet - Turret Collision
-		for(int i=0;i<turrets.size();i++){
-			Bullet b=bullets.get(i);
-			double bX=b.getX();
-			double bY=b.getY();
-			double bR=b.getR();
-			for(int j=0;j<turrets.size();j++){
-				Turret e = turrets.get(j);
-				double eX=e.getX();
-				double eY=e.getY();
-				double eR=e.getR();
-				
-				double dx=bX-eX;
-				double dy=bY-eY;
-				double distance=Math.sqrt(dx*dx+dy*dy);
-				if(distance<bR+eR){
-					e.hit();
-					bullets.remove(i);
-					i--;
-					break;
-					
-				}
-			}
-		}
+		
 		//check dead enemies
 		for(int i=0;i<enemies.size();i++){
 			if(enemies.get(i).isDead()){
@@ -302,22 +276,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 				
 				
 			}
-			//Player-turret collision
-			for(int i=0;i<turrets.size();i++){
-				Turret e=turrets.get(i);
-				double ex=e.getX();
-				double ey=e.getY();
-				double er=e.getR();
-				
-				double dx=px-ex;
-				double dy=py-ey;
-				double distance=Math.sqrt(dx*dx+dy*dy);
-				if(distance<pr+er){
-					player.loseLife();					
-				}
-				
-				
-			}
+
 		}
 		//check dead player
 		if(player.isDead()){
@@ -355,9 +314,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 				for(int j=0;j<enemies.size();j++ ){
 					enemies.get(j).setSlow(true);
 					}
-				for(int j=0;j<turrets.size();j++ ){
-					turrets.get(j).setSlow(true);
-					}
+	
 				texts.add(new Text(player.getX(),player.getY(),2000,"Slow Down"));
 				}
 				
@@ -373,9 +330,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 				for(int j=0;j<enemies.size();j++ ){
 					enemies.get(j).setSlow(false);
 					}
-				for(int j=0;j<turrets.size();j++ ){
-					turrets.get(j).setSlow(false);
-					}
+			
 			}
 		}
 		
@@ -414,10 +369,8 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		for(int i=0;i<enemies.size();i++){
 			enemies.get(i).draw(g);
 		}
-		//Draw Turret
-		for(int i=0;i<turrets.size();i++){
-			turrets.get(i).draw(g);
-		}
+
+	
 		//Draw PowerUp
 		for(int i=0;i<powerUps.size();i++){
 			powerUps.get(i).draw(g);
