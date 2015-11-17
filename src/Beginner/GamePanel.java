@@ -538,6 +538,9 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		if(keyCode==KeyEvent.VK_Z){
 			player.setFiring(true);
 		}
+		if(keyCode==KeyEvent.VK_X&&player.getPower()>=4&&player.getPowerLevel()>=4){
+			player.setUltimate(true);
+		}
 	}
 
 	@Override
@@ -557,6 +560,9 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 		}
 		if(keyCode==KeyEvent.VK_Z){
 			player.setFiring(false);
+		}
+		if(keyCode==KeyEvent.VK_X){
+			player.setUltimate(false);
 		}
 	}
 

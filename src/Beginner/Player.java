@@ -8,7 +8,7 @@ public class Player {
 	private int x,y,r,width,height;
 	private int dx,dy,speed;
 	private int lives,maxLives;
-	private boolean left,right,up,down,firing;
+	private boolean left,right,up,down,firing,ultimate;
 	private long firingTimer,firingDelay;
 	private boolean recovering;
 	private long recoveryTimer;
@@ -152,6 +152,9 @@ public void setUp(boolean up) {
 }
 public void setDown(boolean down) {
 	this.down = down;
+}
+public void setUltimate(boolean ultimate) {
+	this.ultimate = ultimate;
 }
 public void setFiring(boolean b) {
 	 firing=b;

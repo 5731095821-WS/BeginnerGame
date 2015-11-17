@@ -36,7 +36,7 @@ ClassLoader loader= PowerUp.class.getClassLoader();
 			e.printStackTrace();
 		}
 		new Animation();
-		r=12;
+		r=20;
 	}
 //Funtions
 
@@ -46,7 +46,7 @@ ClassLoader loader= PowerUp.class.getClassLoader();
 			return false;
 	}
 	public void draw(Graphics2D g){
-		g.drawImage(image,(int)x-width/2,(int)y-height/2,null);
+		g.drawImage(image,(int)x-width,(int)y-height,null);
 
 	}
 	

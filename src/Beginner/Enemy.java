@@ -52,21 +52,21 @@ public class Enemy {
 			
 				speed=4;
 				r=20;
-				health=2;
+				health=3;
 			}
 			if(rank==3){
 				walkingSprites=Resource.deerMove;
 				hurtingSprites=Resource.deerHurt;
 				speed=5;
 				r=35;
-				health=3;
+				health=5;
 			}
 			if(rank==4){
 				walkingSprites=Resource.fatSoMove;
 				hurtingSprites=Resource.fatSoHurt;
 				speed=5;
 				r=45;
-				health=4;
+				health=6;
 			}
 		}
 		//faster Default
@@ -91,14 +91,14 @@ public class Enemy {
 					hurtingSprites=Resource.witchHurt;
 					speed=4;
 					r=35;
-					health=2+this.rank;
+					health=3+this.rank;
 				}
 				if(rank==3){
 					walkingSprites=Resource.fatSoAttack;
 					hurtingSprites=Resource.fatSoHurt;
 					speed=4;
 					r=45;
-					health=2+this.rank;
+					health=4+this.rank;
 				}
 
 			}
