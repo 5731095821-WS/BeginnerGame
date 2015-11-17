@@ -11,8 +11,8 @@ private	double x,y;
 private int width=40,height=40;
 private	int r;
 private	int type;
-private Animation animation;
 private BufferedImage image;
+private int score=7;
 ClassLoader loader= PowerUp.class.getClassLoader();
 	// 1 is +1Life
 	// 2 is +1 power
@@ -34,7 +34,7 @@ ClassLoader loader= PowerUp.class.getClassLoader();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		animation=new Animation();
+		new Animation();
 		r=12;
 	}
 //Funtions
@@ -77,6 +77,8 @@ ClassLoader loader= PowerUp.class.getClassLoader();
 	public int getType() {
 		return type;
 	}
-	
+	public int getScore(){
+		return score;
+	}
 	
 }

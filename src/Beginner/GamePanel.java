@@ -317,7 +317,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	
 				texts.add(new Text(player.getX(),player.getY(),2000,"Slow Down"));
 				}
-				
+				player.addScore(powerUps.get(i).getScore());
 				powerUps.remove(i);
 				i--;
 			}
