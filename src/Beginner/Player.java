@@ -209,6 +209,12 @@ public void decreasePower(){
     power=0;
     if(powerLevel<=0)powerLevel=0;
 }
+public void ultimate(){
+	if(power>=4||powerLevel>=4){
+		powerLevel=0;
+		power=0;
+	}
+}
 public boolean isDead() {
 	return lives<=0;
 }

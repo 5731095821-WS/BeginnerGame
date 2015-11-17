@@ -18,7 +18,8 @@ ClassLoader loader= PowerUp.class.getClassLoader();
 	// 2 is +1 power
 	// 3 is +2 power 
 	// 4 slow Down
-	
+	// 5 ultimate
+
 	//Constructor
 	public PowerUp(int type,double x,double y){
 		this.type=type;
