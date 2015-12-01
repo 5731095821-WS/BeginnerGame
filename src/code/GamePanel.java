@@ -53,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable,KeyListener {
 	}
 	
 	//FUNCTIONS
-	public void addNotify(){
+	public synchronized void addNotify(){
 		super.addNotify();
 		if(thread==null){
 			thread=new Thread(this);
