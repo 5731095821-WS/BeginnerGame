@@ -1,4 +1,4 @@
-package Beginner;
+package code;
 
 import java.applet.Applet;
 import java.applet.AudioClip;

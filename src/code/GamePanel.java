@@ -1,4 +1,4 @@
-package Beginner;
+package code;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;

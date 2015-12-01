@@ -1,6 +1,6 @@
 //This is Main
 
-package Beginner;
+package code;
 
 import java.io.IOException;
 

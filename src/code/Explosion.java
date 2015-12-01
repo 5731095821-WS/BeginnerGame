@@ -1,4 +1,4 @@
-package Beginner;
+package code;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
